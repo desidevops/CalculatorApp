@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: desi-calculator-app
+  labels:
+    app: desi-calculator-app
+spec:
+  replicas: 2  # Number of pod replicas
+  selector:
+    matchLabels:
+      app: desi-calculator-app
+  template:
+    metadata:
+      labels:
+        app: desi-calculator-app
+    spec:
+      containers:
+        - name: desi-calculator-app
+          image: desidevops/calculatorapp:v1  # Your application image
+          ports:
+            - containerPort: 3000  # Expose port 80 inside the container
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: desi-calculator-app-service
+spec:
+  selector:
+    app: desi-calculator-app
+  ports:
+    - port: 3000       # Expose service on port 80
+      targetPort: 3000  # Forward traffic to container's port 80
+  type: NodePort  # Use LoadBalancer for external access (use NodePort for Minikube)
+
+
+# kubectl apply -f deployment.yml
+# kubectl get deployments
+# kubectl delete deployment myapp

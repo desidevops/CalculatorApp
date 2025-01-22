@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"    # Exposes port 3000 from the container to the host
+    volumes:
+      - .:/myapp       # Mounts the current directory to /myapp in the container
+    environment:
+      - NODE_ENV=development  # Optional: Set the environment to development or production
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:
+    driver: bridge  # Default bridge network, allows communication between containers
